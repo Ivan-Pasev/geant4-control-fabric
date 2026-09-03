@@ -1,0 +1,139 @@
+name: GM07 Geant4 11.4.2 compile + smoke (NON-EVIDENTIARY)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  geant4-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      G4_COMMIT: 8cc04f65977807f1848da7b958c421cd5e162f26
+      HARNESS_DIR: canonical/v0.12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Boundary declaration
+        run: |
+          echo 'NON-EVIDENTIARY CI: this job does not advance any G7 scientific gate.'
+          echo 'XPhysics=NONE'
+          test -f "$HARNESS_DIR/CMakeLists.txt"
+          test -f "$HARNESS_DIR/g4cf.cc"
+          test -f "$HARNESS_DIR/macros/run-template.mac"
+          test -f "$HARNESS_DIR/manifests/smoke/RUN_002_SMOKE.json"
+
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake git ninja-build libexpat1-dev libxerces-c-dev
+
+      - name: Fetch pinned Geant4 source
+        run: |
+          git clone --filter=blob:none --no-checkout https://github.com/Geant4/geant4.git "$RUNNER_TEMP/geant4"
+          git -C "$RUNNER_TEMP/geant4" checkout --detach "$G4_COMMIT"
+          test "$(git -C "$RUNNER_TEMP/geant4" rev-parse HEAD)" = "$G4_COMMIT"
+
+      - name: Configure Geant4 11.4.2 with datasets
+        run: |
+          cmake -S "$RUNNER_TEMP/geant4" -B "$RUNNER_TEMP/geant4-build" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$RUNNER_TEMP/geant4-install" \
+            -DGEANT4_BUILD_MULTITHREADED=ON \
+            -DGEANT4_INSTALL_EXAMPLES=OFF \
+            -DGEANT4_INSTALL_DATA=ON
+
+      - name: Build and install Geant4
+        run: cmake --build "$RUNNER_TEMP/geant4-build" --target install -j 2
+
+      - name: Audit installed Geant4
+        run: |
+          "$RUNNER_TEMP/geant4-install/bin/geant4-config" --version
+          "$RUNNER_TEMP/geant4-install/bin/geant4-config" --datasets | tee geant4-datasets.txt
+          "$RUNNER_TEMP/geant4-install/bin/geant4-config" --check-datasets | tee geant4-check-datasets.txt
+          "$RUNNER_TEMP/geant4-install/bin/geant4-config" --has-feature multithreading
+          find "$RUNNER_TEMP/geant4-install" -name Geant4Config.cmake -print
+
+      - name: Configure GM07 harness
+        run: |
+          G4DIR="$(dirname "$(find "$RUNNER_TEMP/geant4-install" -name Geant4Config.cmake -print -quit)")"
+          test -n "$G4DIR"
+          cmake -S "$HARNESS_DIR" -B build-gm07 -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGeant4_DIR="$G4DIR"
+
+      - name: Build GM07 harness
+        run: cmake --build build-gm07 -j 2
+
+      - name: Resolve smoke macro
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path('canonical/v0.12')
+          m=json.loads((root/'manifests/smoke/RUN_002_SMOKE.json').read_text())
+          t=(root/'macros/run-template.mac').read_text()
+          repl={
+            '__SOURCE_X_MM__':str(m['source']['position_mm'][0]),
+            '__SOURCE_Y_MM__':str(m['source']['position_mm'][1]),
+            '__SOURCE_Z_MM__':str(m['source']['position_mm'][2]),
+            '__DIR_X__':str(m['source']['direction'][0]),
+            '__DIR_Y__':str(m['source']['direction'][1]),
+            '__DIR_Z__':str(m['source']['direction'][2]),
+            '__SOURCE_ENERGY_MEV__':str(m['source']['energy_MeV']),
+            '__EVENTS__':str(m['events']),
+          }
+          for k,v in repl.items(): t=t.replace(k,v)
+          pathlib.Path('runtime-smoke').mkdir(exist_ok=True)
+          pathlib.Path('runtime-smoke/RUN_002_SMOKE.mac').write_text(t)
+          PY
+
+      - name: Run 100-event RUN_002 smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/geant4-install/bin/geant4.sh"
+          mkdir -p runtime-smoke/results runtime-smoke/provenance
+          export G4CF_RUN_ID=RUN_002_SMOKE
+          export G4CF_RUN_MANAGER=SerialOnly
+          export G4CF_THREADS=1
+          export G4CF_MASTER_SEED=11411
+          export G4CF_PHYSICS_LIST=Shielding
+          export G4CF_TARGET_ENABLED=0
+          export G4CF_TARGET_MATERIAL=G4_POLYETHYLENE
+          export G4CF_TARGET_THICKNESS_MM=50
+          export G4CF_DETECTOR_BASELINE_MM=1000
+          export G4CF_OUTPUT_BASENAME="$GITHUB_WORKSPACE/runtime-smoke/results/events"
+          export G4CF_PROVENANCE_BASENAME="$GITHUB_WORKSPACE/runtime-smoke/provenance/runtime"
+          export G4CF_CONSTRUCTED_GEOMETRY_REPORT="$GITHUB_WORKSPACE/runtime-smoke/provenance/constructed_geometry.json"
+          ./build-gm07/g4cf runtime-smoke/RUN_002_SMOKE.mac 2>&1 | tee runtime-smoke/g4cf.log
+          test -f runtime-smoke/results/events.root
+          test -f runtime-smoke/provenance/runtime.txt
+          test -f runtime-smoke/provenance/constructed_geometry.json
+
+      - name: Emit non-evidentiary CI boundary
+        if: always()
+        run: |
+          mkdir -p runtime-smoke
+          cat > runtime-smoke/CI_NON_EVIDENTIARY.json <<'JSON'
+          {
+            "schema": "g4cf-ci-boundary-v1",
+            "scientific_gate_advance_authorized": false,
+            "evidence_admission_status": "NOT_CANONICAL_EVIDENCE",
+            "note": "GitHub CI compile/smoke is engineering evidence only until the complete v0.12 authority tree and original bundle identity are verified under the Drive evidence contract."
+          }
+          JSON
+
+      - name: Upload smoke diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gm07-geant4-smoke-non-evidentiary
+          path: |
+            runtime-smoke/
+            geant4-datasets.txt
+            geant4-check-datasets.txt
+          if-no-files-found: warn
