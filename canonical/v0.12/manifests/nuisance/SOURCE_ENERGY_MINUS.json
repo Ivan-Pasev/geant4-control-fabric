@@ -1,0 +1,42 @@
+{
+  "schema": "g4cf-run-manifest-v1",
+  "run_id": "RUN_005_SRC_E_MINUS",
+  "role": "numerical_derivative_branch",
+  "physics_list": "Shielding",
+  "threads": 4,
+  "master_seed": 11411,
+  "events": 100000,
+  "source": {
+    "particle": "neutron",
+    "energy_MeV": 2.44,
+    "position_mm": [
+      0.0,
+      0.0,
+      -250.0
+    ],
+    "direction": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "target": {
+    "enabled": true,
+    "material": "G4_POLYETHYLENE",
+    "thickness_mm": 50.0
+  },
+  "detector": {
+    "baseline_mm": 1000.0,
+    "baseline_reference": "target_center_to_detector_front_face"
+  },
+  "output": {
+    "basename": "RUN_005_SRC_E_MINUS/events"
+  },
+  "nuisance": {
+    "name": "source_energy_MeV",
+    "nominal": 2.45,
+    "step": -0.01,
+    "status": "PROVISIONAL_PIPELINE_TEST_NOT_CALIBRATION_UNCERTAINTY"
+  },
+  "run_manager": "MTOnly"
+}

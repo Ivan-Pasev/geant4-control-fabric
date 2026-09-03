@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "g4cf-run-manifest-v1",
+  "type": "object",
+  "required": ["schema", "run_id", "physics_list", "run_manager", "threads", "master_seed", "events", "source", "target", "detector", "output"],
+  "properties": {
+    "schema": {"const": "g4cf-run-manifest-v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "physics_list": {"type": "string", "minLength": 1},
+    "run_manager": {"enum": ["SerialOnly", "MTOnly"]},
+    "threads": {"type": "integer", "minimum": 1},
+    "master_seed": {"type": "integer", "minimum": 1},
+    "events": {"type": "integer", "minimum": 1},
+    "source": {"type": "object"},
+    "target": {"type": "object"},
+    "detector": {"type": "object", "required": ["baseline_mm","baseline_reference"]},
+    "output": {"type": "object"}
+  }
+}

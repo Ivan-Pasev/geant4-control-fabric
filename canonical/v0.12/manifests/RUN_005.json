@@ -1,0 +1,37 @@
+{
+  "schema": "g4cf-run-manifest-v1",
+  "run_id": "RUN_005",
+  "role": "nominal_pe_target",
+  "physics_list": "Shielding",
+  "threads": 4,
+  "master_seed": 11411,
+  "events": 100000,
+  "source": {
+    "particle": "neutron",
+    "energy_MeV": 2.45,
+    "position_mm": [
+      0.0,
+      0.0,
+      -250.0
+    ],
+    "direction": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "target": {
+    "enabled": true,
+    "material": "G4_POLYETHYLENE",
+    "thickness_mm": 50.0
+  },
+  "detector": {
+    "baseline_mm": 1000.0,
+    "baseline_reference": "target_center_to_detector_front_face"
+  },
+  "output": {
+    "basename": "RUN_005/events"
+  },
+  "claim_boundary": "virtual methodological benchmark; not a calibrated physical apparatus",
+  "run_manager": "MTOnly"
+}

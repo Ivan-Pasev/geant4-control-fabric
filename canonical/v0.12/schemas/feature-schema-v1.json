@@ -1,0 +1,9 @@
+{
+  "schema": "g4cf-feature-schema-v1",
+  "blocks": [
+    {"name": "phase_neutron_energy", "kind": "hist1d", "field": "kinetic_pre_MeV", "bins": 52, "range": [0.0, 2.6], "selection": "record_kind==0 && particle_pdg==2112"},
+    {"name": "phase_time", "kind": "hist1d", "field": "global_time_ns", "bins": 100, "range": [0.0, 5000.0], "selection": "record_kind==0 && particle_pdg==2112"},
+    {"name": "detector_edep", "kind": "hist1d", "field": "energy_deposit_MeV", "bins": 60, "range": [0.0, 3.0], "selection": "record_kind==1"},
+    {"name": "phase_E_x_t", "kind": "hist2d", "fields": ["kinetic_pre_MeV", "global_time_ns"], "bins": [26, 25], "range": [[0.0, 2.6], [0.0, 5000.0]], "selection": "record_kind==0 && particle_pdg==2112"}
+  ]
+}

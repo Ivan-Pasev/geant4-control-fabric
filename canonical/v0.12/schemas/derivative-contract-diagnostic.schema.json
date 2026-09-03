@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://g-i-l-c.com/schemas/g4cf-derivative-contract-diagnostic-v1.json",
+  "title": "G4 Control Fabric Derivative Contract Diagnostic v1",
+  "type": "object",
+  "required": ["schema", "parameter", "pipeline_contract_pass", "review_required", "automatic_physics_acceptance", "input_sha256", "failures"],
+  "properties": {
+    "schema": {"const": "g4cf-derivative-contract-diagnostic-v1"},
+    "parameter": {"const": "source_energy_MeV"},
+    "pipeline_contract_pass": {"type": "boolean"},
+    "review_required": {"const": true},
+    "automatic_physics_acceptance": {"const": false},
+    "input_sha256": {"type": "object"},
+    "failures": {"type": "array", "items": {"type": "string"}}
+  }
+}

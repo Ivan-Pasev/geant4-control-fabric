@@ -1,0 +1,82 @@
+{
+  "schema": "g4cf-evidence-contract-v1",
+  "harness_version": "0.12.0",
+  "geant4": {
+    "required_family": "11.4.x",
+    "preferred_version": "11.4.2",
+    "source_commit": "8cc04f65977807f1848da7b958c421cd5e162f26"
+  },
+  "required_run_ids": [
+    "RUN_002",
+    "RUN_002_MT_REPEAT",
+    "RUN_002_MT2",
+    "RUN_002_SERIAL",
+    "RUN_005",
+    "RUN_005_SRC_E_MINUS",
+    "RUN_005_SRC_E_PLUS"
+  ],
+  "required_reports": [
+    "harness-identity-report.json",
+    "bootstrap-report.json",
+    "runtime-audit.json",
+    "campaign-report.json",
+    "source-validation-RUN_002.json",
+    "source-validation-RUN_002_MT_REPEAT.json",
+    "source-validation-RUN_002_MT2.json",
+    "source-validation-RUN_002_SERIAL.json",
+    "source-validation-RUN_005.json",
+    "source-validation-RUN_005_SRC_E_MINUS.json",
+    "source-validation-RUN_005_SRC_E_PLUS.json",
+    "compare-RUN_002-vs-RUN_002_MT_REPEAT.json",
+    "compare-RUN_002-vs-RUN_002_MT2.json",
+    "compare-RUN_002-MT-vs-SERIAL.json",
+    "material-response-RUN_002-vs-RUN_005.json",
+    "constructed-geometry-RUN_002.json",
+    "constructed-geometry-RUN_005.json",
+    "truth-schema-RUN_002.json",
+    "truth-schema-RUN_005.json",
+    "root-mt-completeness.json",
+    "source-energy-derivative-contract.json"
+  ],
+  "required_analysis_artifacts": [
+    "RUN_002-features.npz",
+    "RUN_002_SERIAL-features.npz",
+    "RUN_005-features.npz",
+    "RUN_005_SRC_E_MINUS-features.npz",
+    "RUN_005_SRC_E_PLUS-features.npz",
+    "source-energy-jacobian.npz"
+  ],
+  "campaign_acceptance_status": "CANONICAL_RUNTIME_CAMPAIGN_EXECUTED_REVIEW_PENDING",
+  "automatic_verdict_ceiling": "REVIEW_READY",
+  "source_identity_requirements": {
+    "source_tree": "EXPECTED_EXTERNAL_HASH_MATCH",
+    "source_bundle": "VERIFIED_LOCAL_FILE_HASH_MATCH"
+  },
+  "required_geometry_run_ids": [
+    "RUN_002",
+    "RUN_005"
+  ],
+  "truth_schema_policy": {
+    "genealogy_scope": "SCORED_RECORDS_ONLY_NOT_COMPLETE_ALL_TRACK_HISTORY",
+    "automatic_genealogy_acceptance": false
+  },
+  "run_manifest_map": {
+    "RUN_002": "manifests/RUN_002.json",
+    "RUN_002_MT_REPEAT": "manifests/RUN_002_MT_REPEAT.json",
+    "RUN_002_MT2": "manifests/RUN_002_MT2.json",
+    "RUN_002_SERIAL": "manifests/RUN_002_SERIAL.json",
+    "RUN_005": "manifests/RUN_005.json",
+    "RUN_005_SRC_E_MINUS": "manifests/nuisance/SOURCE_ENERGY_MINUS.json",
+    "RUN_005_SRC_E_PLUS": "manifests/nuisance/SOURCE_ENERGY_PLUS.json"
+  },
+  "root_mt_policy": {
+    "automatic_root_mt_acceptance": false,
+    "required_status": "REVIEW_REQUIRED_ROOT_MT_COMPLETENESS_GENERATED"
+  },
+  "derivative_policy": {
+    "automatic_physics_acceptance": false,
+    "required_status": "REVIEW_REQUIRED_DERIVATIVE_CONTRACT_GENERATED",
+    "parameter": "source_energy_MeV",
+    "status": "PROVISIONAL_PIPELINE_TEST_NOT_CALIBRATION_UNCERTAINTY"
+  }
+}

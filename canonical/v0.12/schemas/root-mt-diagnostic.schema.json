@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://g-i-l-c.com/schemas/g4cf-root-mt-diagnostic-v1.json",
+  "title": "G4 Control Fabric ROOT/MT Diagnostic v1",
+  "type": "object",
+  "required": ["schema", "required_run_ids", "runs", "structural_root_mt_pass", "review_required", "automatic_root_mt_acceptance", "failures"],
+  "properties": {
+    "schema": {"const": "g4cf-root-mt-diagnostic-v1"},
+    "required_run_ids": {"type": "array", "items": {"type": "string"}},
+    "structural_root_mt_pass": {"type": "boolean"},
+    "review_required": {"const": true},
+    "automatic_root_mt_acceptance": {"const": false},
+    "runs": {"type": "object"},
+    "failures": {"type": "array", "items": {"type": "string"}}
+  }
+}

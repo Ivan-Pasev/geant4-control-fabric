@@ -1,0 +1,13 @@
+/control/verbose 1
+/run/verbose 1
+# seedOnce=0 is the Geant4 MT default and guarantees per-event reproducibility
+# regardless of worker-thread count. We set it explicitly for provenance.
+/run/eventModulo 0 0
+/run/initialize
+/gps/particle neutron
+/gps/pos/type Point
+/gps/pos/centre __SOURCE_X_MM__ __SOURCE_Y_MM__ __SOURCE_Z_MM__ mm
+/gps/direction __DIR_X__ __DIR_Y__ __DIR_Z__
+/gps/ene/type Mono
+/gps/ene/mono __SOURCE_ENERGY_MEV__ MeV
+/run/beamOn __EVENTS__

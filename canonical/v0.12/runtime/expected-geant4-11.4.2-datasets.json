@@ -1,0 +1,24 @@
+{
+  "schema": "g4cf-expected-dataset-matrix-v1",
+  "status": "SOURCE_DERIVED_REFERENCE_NOT_RUNTIME_HARVEST",
+  "geant4_tag": "v11.4.2",
+  "geant4_version_number": 1142,
+  "source": "Geant4/geant4 v11.4.2 cmake/Modules/G4DatasetDefinitions.cmake",
+  "datasets": [
+    {"name":"G4NDL","version":"4.7.1","env":"G4NEUTRONHPDATA","optional":false},
+    {"name":"G4EMLOW","version":"8.8","env":"G4LEDATA","optional":false},
+    {"name":"PhotonEvaporation","version":"6.1.2","env":"G4LEVELGAMMADATA","optional":false},
+    {"name":"RadioactiveDecay","version":"6.1.2","env":"G4RADIOACTIVEDATA","optional":false},
+    {"name":"G4PARTICLEXS","version":"4.2","env":"G4PARTICLEXSDATA","optional":false},
+    {"name":"G4PII","version":"1.3","env":"G4PIIDATA","optional":false},
+    {"name":"RealSurface","version":"2.2","env":"G4REALSURFACEDATA","optional":false},
+    {"name":"G4SAIDDATA","version":"2.0","env":"G4SAIDXSDATA","optional":false},
+    {"name":"G4ABLA","version":"3.3","env":"G4ABLADATA","optional":false},
+    {"name":"G4INCL","version":"1.3","env":"G4INCLDATA","optional":false},
+    {"name":"G4ENSDFSTATE","version":"3.0","env":"G4ENSDFSTATEDATA","optional":false},
+    {"name":"G4CHANNELING","version":"2.0","env":"G4CHANNELINGDATA","optional":false},
+    {"name":"G4TENDL","version":"1.4","env":"G4PARTICLEHPDATA","optional":true},
+    {"name":"G4NUDEXLIB","version":"1.0","env":"G4NUDEXLIBDATA","optional":true},
+    {"name":"G4URRPT","version":"1.1","env":"G4URRPTDATA","optional":true}
+  ]
+}

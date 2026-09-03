@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://g-i-l-c.com/schemas/g4cf-evidence-manifest-v1.json",
+  "title": "G4 Control Fabric Evidence Manifest v1",
+  "type": "object",
+  "required": ["schema", "created_utc", "source_identity", "geant4_identity", "campaign", "artifacts"],
+  "properties": {
+    "schema": {"const": "g4cf-evidence-manifest-v1"},
+    "created_utc": {"type": "string"},
+    "source_identity": {
+      "type": "object",
+      "required": ["harness_version", "source_tree_sha256"],
+      "properties": {
+        "harness_version": {"type": "string"},
+        "source_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_bundle_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "geant4_identity": {
+      "type": "object",
+      "required": ["version", "source_commit"],
+      "properties": {
+        "version": {"type": "string"},
+        "source_commit": {"type": "string"}
+      }
+    },
+    "campaign": {
+      "type": "object",
+      "required": ["status", "report_path"],
+      "properties": {
+        "status": {"type": "string"},
+        "report_path": {"type": "string"}
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "size", "sha256", "role"],
+        "properties": {
+          "path": {"type": "string"},
+          "size": {"type": "integer", "minimum": 0},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "role": {"type": "string"}
+        }
+      }
+    }
+  }
+}

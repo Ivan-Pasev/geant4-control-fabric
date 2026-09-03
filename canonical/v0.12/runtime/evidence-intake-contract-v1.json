@@ -1,0 +1,16 @@
+{
+  "schema": "g4cf-evidence-intake-contract-v1",
+  "automatic_verdict_ceiling": "REVIEW_READY_QUARANTINED",
+  "allowed_archive_types": ["zip", "tar", "tar.gz", "tgz"],
+  "required_root_files": ["evidence-manifest.json", "SHA256SUMS"],
+  "allowed_top_level_entries": ["evidence-manifest.json", "SHA256SUMS", "meta", "reports", "runs", "analysis"],
+  "limits": {
+    "max_members": 512,
+    "max_single_file_bytes": 8589934592,
+    "max_total_uncompressed_bytes": 34359738368,
+    "max_path_length": 512
+  },
+  "reject_nested_archives": true,
+  "nested_archive_suffixes": [".zip", ".tar", ".tgz", ".tar.gz", ".7z", ".rar"],
+  "note": "These are engineering intake limits, not physics assumptions. Review-ready quarantine never authorizes a scientific gate transition."
+}

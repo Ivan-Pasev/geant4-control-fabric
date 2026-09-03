@@ -1,0 +1,8 @@
+{
+  "schema": "g4cf-geant4-source-pin-v1",
+  "version": "11.4.2",
+  "tag": "v11.4.2",
+  "repository": "https://github.com/Geant4/geant4.git",
+  "commit": "8cc04f65977807f1848da7b958c421cd5e162f26",
+  "claim": "Pinned upstream source identity for runtime provisioning; not evidence that this source was built or executed."
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "g4cf-host-execution-contract-v1",
+  "harness_version": "0.12.0",
+  "supported_host_families": [
+    "linux",
+    "wsl2"
+  ],
+  "automatic_scientific_verdict": false,
+  "stages": [
+    "HARNESS_IDENTITY",
+    "HOST_PREFLIGHT",
+    "GEANT4_SOURCE_ADMISSIBILITY",
+    "GEANT4_BOOTSTRAP",
+    "RUNTIME_CAMPAIGN",
+    "EVIDENCE_BUILD",
+    "EVIDENCE_ARCHIVE",
+    "RETURN_READY"
+  ],
+  "required_tools": {
+    "always": [
+      "python3",
+      "cmake",
+      "c++"
+    ],
+    "network_fetch": [
+      "git"
+    ]
+  },
+  "return_archive": {
+    "format": "tar.gz",
+    "contains_root": [
+      "evidence-manifest.json",
+      "SHA256SUMS"
+    ],
+    "note": "Archive generation and SHA-256 prove transport artifact identity only; scientific gate acceptance requires Drive adjudication."
+  },
+  "drive_landing_state": "00_INCOMING_UNTRUSTED",
+  "source_identity_policy": {
+    "full_campaign_requires_verified_harness_tree": true,
+    "full_campaign_requires_verified_original_bundle_file": true,
+    "full_campaign_geant4_source_modes": [
+      "fetch",
+      "git-source-dir-at-pinned-commit"
+    ],
+    "source_archive_policy": "SMOKE_ONLY_UNLESS_FUTURE_CANONICAL_ARCHIVE_ATTESTATION_IS_ADDED"
+  }
+}
