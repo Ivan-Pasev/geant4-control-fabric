@@ -1,0 +1,29 @@
+name: Authority preflight (NON-EVIDENTIARY)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authority-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Freeze execution identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          EXPECTED_ZIP_SHA='2c11a57fc102266ebe72bd0c91f5271a56040248032c447d2dfb08329953f6e1'
+          EXPECTED_TREE_SHA='8cc717669c23f63062f5a70806480414c23d1ecb0ede4670e369b2cd148cc3ee'
+          EXPECTED_G4_COMMIT='8cc04f65977807f1848da7b958c421cd5e162f26'
+          grep -F "$EXPECTED_ZIP_SHA" CANONICAL_AUTHORITY.md
+          grep -F "$EXPECTED_TREE_SHA" CANONICAL_AUTHORITY.md
+          grep -F "$EXPECTED_G4_COMMIT" CANONICAL_AUTHORITY.md
+          grep -F 'REVIEW_READY' CANONICAL_AUTHORITY.md
+          echo 'NON-EVIDENTIARY preflight: authority tuple is internally declared.'
+          echo 'No physics gate is advanced by this workflow.'
