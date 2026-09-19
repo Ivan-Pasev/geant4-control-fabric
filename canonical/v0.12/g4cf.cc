@@ -4,6 +4,7 @@
 #include "PhysicsListLoader.hh"
 
 #include "G4RunManagerFactory.hh"
+#include "G4VModularPhysicsList.hh"
 #include "G4UImanager.hh"
 #include "G4Version.hh"
 #include "Randomize.hh"
