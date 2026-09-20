@@ -3,6 +3,8 @@ name: GM07 Geant4 11.4.2 compile + smoke (NON-EVIDENTIARY)
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
